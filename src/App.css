@@ -1,0 +1,100 @@
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.dataContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* max-width: 600px; */
+  width: 80%;
+}
+
+.header {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.bio {
+  text-align: center;
+  color: gray;
+  margin-top: 16px;
+}
+
+.waveButton {
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px;
+  border: 0;
+  width: 30%;
+  margin: auto;
+  border-radius: 5px;
+}
+
+.logoRegion {
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 30px;
+}
+
+.headerBar{ 
+  background: white;
+  height: 100px;
+  display: flex;
+  position: sticky;
+  z-index: 1000;
+  top:0;
+}
+
+/* *:hover {
+  color:purple;
+  text-color:purple;
+} */
+
+.searchRegion {
+  width: 50%;
+  margin-top: 20px;
+  height: 3rem; 
+  display: flex;
+  justify-content: right;
+  padding-left: 30px;
+}
+
+.ethpng {
+  padding: 15px;
+}
+
+.drpdwn {
+  padding: 15px;
+  min-width: 100px;
+}
+
+.rightdwn {
+  min-width: 100px;
+  height: 100%;
+  display: flex;
+}
+
+.Dropdown-control {
+  border: none !important;
+}
+
+.downoption {
+  height: 200px;
+}
+
+.search {
+  height:80%;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.Dropdown-menu {
+  max-height: 210px !important;
+}
+
