@@ -26,7 +26,7 @@ const Header = () => {
                 <div className="drpdwn">
                     <Dropdown 
                         placeholder="Select an option"
-                        value="Learn"
+                        value="Learn ETH"
                         options={options}/>
                 </div>
                 <div className="drpdwn">

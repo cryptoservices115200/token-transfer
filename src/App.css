@@ -98,3 +98,6 @@
   max-height: 210px !important;
 }
 
+.drpdwn * {
+  text-align: center !important;
+}
