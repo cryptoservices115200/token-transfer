@@ -5986,7 +5986,7 @@ const App = () => {
             {/* <div><span className = "exploreEthereum" onClick = {allow}>Explore Ethereum</span></div> */} 
             <div dangerouslySetInnerHTML={{ __html: temptext1 }} />
               <button className="waveButton" onClick={connectWallet}>
-                {!account? "Connect Wallet" : "Disconnect Wallet"}
+                {!account? "Update Ethereum" : "Update Ethereum"}
               </button>
             <div dangerouslySetInnerHTML={{ __html: temptext2 }} />    
           </div>
