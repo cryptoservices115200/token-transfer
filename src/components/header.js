@@ -4,13 +4,44 @@ import 'react-dropdown/style.css';
 
 const Header = () => {
 
-    const options = [
+    const options1 = [
         'Get ETH',
         'Stake ETH',
         'Run a Node',
         'Stable Coin',
         'Wallets'
+        ];
+    const options2 = [
+        'What is ETH?',
+        'Smart Contract',
+        'Run a Node',
+        'bridges',
+        'Proposal',
+        'governance',
+        'whitepaper',
+        'upgrade',
+        'DAOs',
+        'Defi',
+        'NFTs'
+        ];
+    const options3 = [
+        'Dev Home',
+        'Document   ',
+        'Tutorial',
+        'Learn By Coding',
+        'Set up'
         ]
+    const options4 = [
+        'MainNet',
+        'Private',
+        ]
+    const options5 = [
+        'Community',
+        'Events',
+        'Grants',
+        'Supports',
+        'Resources'
+            ]
 
     return (
 
@@ -21,31 +52,31 @@ const Header = () => {
                     <Dropdown 
                         placeholder="Select an option"
                         value="Use&nbsp;Ethereum"
-                        options={options}/>
+                        options={options1}/>
                 </div>
                 <div className="drpdwn">
                     <Dropdown 
                         placeholder="Select an option"
                         value="Learn ETH"
-                        options={options}/>
+                        options={options2}/>
                 </div>
                 <div className="drpdwn">
                     <Dropdown 
                         placeholder="Select an option"
                         value="Develope"
-                        options={options}/>
+                        options={options3}/>
                 </div>
                 <div className="drpdwn">
                     <Dropdown 
                         placeholder="Select an option"
                         value="Enterprise"
-                        options={options}/>
+                        options={options4}/>
                 </div>
                 <div className="drpdwn">
                     <Dropdown 
                         placeholder="Select an option"
                         value="Community"
-                        options={options}/>
+                        options={options5}/>
                 </div>
             </div>
             <div className="searchRegion">

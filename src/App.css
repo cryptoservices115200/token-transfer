@@ -26,12 +26,22 @@
 
 .waveButton {
   cursor: pointer;
+  background-color: white;
+  border: 1px solid black !important;
+  max-width: 160px;
   margin-top: 16px;
   padding: 8px;
   border: 0;
   width: 30%;
   margin: auto;
-  border-radius: 5px;
+  border-radius: 3px;
+}
+
+.waveButton:hover {
+  color: #061bdb;
+  border: 1px solid #061bdb;
+  box-shadow: #e2e2e2 4px 4px 0px 0px;
+  margin-bottom: 5px;
 }
 
 .logoRegion {
@@ -95,7 +105,7 @@
 }
 
 .Dropdown-menu {
-  max-height: 210px !important;
+  max-height:600px !important;
 }
 
 .drpdwn * {
